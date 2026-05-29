@@ -1,6 +1,8 @@
+import { events } from "animejs";
+
 export class ExecutionEngine {
 
-  private steps = [];
+  private events = [];
 
   async execute(algorithm, input) {
 
@@ -10,18 +12,21 @@ export class ExecutionEngine {
 
     await algorithm.execute(ctx, input);
 
-    return this.steps;
+    return this.events;
   }
 
   emit(event) {
-    const { type, line, fn, fnLabel, returnValue } = event;
+    const { id, type, line, fn, fnLabel, returnValue } = event;
+    const seq = this.events.length;
 
     // create snapshot
     const snapshot = {
-      type, line, fn, fnLabel, returnValue
+      seq,
+      id, type, line, fn, fnLabel, returnValue
     }
+    console.log("new Snapshot : ", snapshot )
 
     // push snapshot
-    this.steps = [snapshot, ...this.steps];
+    this.events = [...this.events, snapshot];
   }
 }

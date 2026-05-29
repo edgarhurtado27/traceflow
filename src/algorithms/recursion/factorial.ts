@@ -10,14 +10,14 @@ const factorial = (n) => {
 
 
 async function execute(ctx, input) {
-  console.log("Calling execute of factorial");
   /*
    * Function definition, it will emit the events for further proccess
    * */
   async function factorial(n) {
     ctx.emit({
+      id: crypto.randomUUID(),
       type: "call",
-      line: 2,
+      line: 4,
       fn: "factorial",
       fnLabel: `factorial(${n})`,
       args: [n]
@@ -25,9 +25,10 @@ async function execute(ctx, input) {
 
     if(n === 0) {
       ctx.emit({
+        id: crypto.randomUUID(),
         type: "base_case",
         fnLabel: `factorial(0)`,
-        line: 3,
+        line: 5,
         returnValue: 1
       });
       return 1;
@@ -37,8 +38,9 @@ async function execute(ctx, input) {
     const finalValue = result * n;
 
     ctx.emit({
+      id: crypto.randomUUID(),
       type: "return",
-      line: 5,
+      line: 7,
       fn: "factorial",
       fnLabel: `factorial(${n})`,
       args: [n],

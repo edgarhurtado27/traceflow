@@ -5,7 +5,6 @@ import "./Stack.css";
 
 export default function Stack({
   items,
-  currentCard,
   renderCardItem,
   stackHeight = 500,
   gap = 10,
@@ -40,7 +39,7 @@ export default function Stack({
     <div className="stack">
       {items.map((item, index) => (
         <div
-          key={item.id}
+          key={index}
           ref={(el) => {
             if (el) {
               refs.current.set(item.id, el);
@@ -53,7 +52,7 @@ export default function Stack({
             height: `${cardHeight}px`,
           }}
         >
-          {renderCardItem(item, currentCard)}
+          {renderCardItem(item)}
         </div>
       ))}
     </div>
