@@ -2,19 +2,28 @@ import { animate } from "animejs";
 import { useEffect, useRef } from "react";
 
 import "./Stack.css";
+import { Snapshot, Frame } from "../../engine/types";
 
+interface StackProps {
+  snapshot: Snapshot | null,
+  renderCardItem: any,
+  stackHeight: number,
+  gap: number
+
+}
 export default function Stack({
-  items,
-  currentCard,
+  snapshot,
   renderCardItem,
   stackHeight = 500,
   gap = 10,
-}) {
+}: StackProps) {
   const refs = useRef(new Map());
 
   const STACK_PADDING = 10;
 
   const availableHeight = stackHeight - STACK_PADDING * 2;
+
+  const items:Frame[] = snapshot?.stack || [];
 
   const cardHeight =
     items.length > 0
@@ -40,7 +49,7 @@ export default function Stack({
     <div className="stack">
       {items.map((item, index) => (
         <div
-          key={item.id}
+          key={index}
           ref={(el) => {
             if (el) {
               refs.current.set(item.id, el);
@@ -53,7 +62,7 @@ export default function Stack({
             height: `${cardHeight}px`,
           }}
         >
-          {renderCardItem(item, currentCard)}
+          {renderCardItem(item)}
         </div>
       ))}
     </div>
