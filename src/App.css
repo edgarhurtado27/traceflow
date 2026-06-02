@@ -19,16 +19,14 @@
   gap: 10px;
 }
 
-
 textarea {
   flex: 1;
   height: 500px;
   background-color: #202020;
-  color:aqua;
+  color: aqua;
   font-family: monospace;
   font-size: 14px;
 }
-
 
 .stackWrapper {
   display: flex;
@@ -37,7 +35,7 @@ textarea {
   gap: 12px;
 }
 
-.title{
+.title {
   color: #999;
   font-size: 20px;
 }
@@ -45,4 +43,3 @@ textarea {
 .executed-line {
   background: rgba(0, 255, 0, 0.08);
 }
-

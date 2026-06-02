@@ -6,26 +6,25 @@
   justify-content: center;
   flex-direction: column;
   padding: 0px 10px;
-  background-color: #2B2D31;
+  background-color: #2b2d31;
 }
 
 .active-bg {
   /* background: #5E81AC; */
-  border-left: 5px solid #5E81AC;
+  border-left: 5px solid #5e81ac;
 }
 
 .returned-bg {
   /* background: #A3BE8C; */
-  border-left: 5px solid #A3BE8C;
+  border-left: 5px solid #a3be8c;
 }
 
-.waiting-bg{
+.waiting-bg {
   /* background: #4C566A; */
-  border-left: 5px solid #4C566A;
+  border-left: 5px solid #4c566a;
 }
 
 .bc-bg {
   /* background: #A3BE8C; */
-  border-left: 5px solid #A3BE8C;
+  border-left: 5px solid #a3be8c;
 }
-
