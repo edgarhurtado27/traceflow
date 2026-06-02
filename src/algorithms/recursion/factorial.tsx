@@ -1,3 +1,5 @@
+import { ExecutionContext, ExecutionEvent } from "../../engine/types";
+
 const code = `/**
  * Calculates factorial recursively.
  */
@@ -9,43 +11,47 @@ const factorial = (n) => {
 `;
 
 
-async function execute(ctx, input) {
+async function execute(ctx: ExecutionContext, input: number) {
+
   /*
    * Function definition, it will emit the events for further proccess
    * */
-  async function factorial(n) {
-    ctx.emit({
+  async function factorial(n: number): Promise<number> {
+
+    const callEvent:ExecutionEvent = {
       id: crypto.randomUUID(),
       type: "call",
       line: 4,
       fn: "factorial",
-      fnLabel: `factorial(${n})`,
-      args: [n]
-    });
+      fnLabel: `factorial(${n})`
+    }
+    ctx.emit(callEvent);
 
     if(n === 0) {
-      ctx.emit({
+      const baseCaseEvent:ExecutionEvent = {
         id: crypto.randomUUID(),
         type: "base_case",
-        fnLabel: `factorial(0)`,
         line: 5,
-        returnValue: 1
-      });
+        fn: "factorial",
+        fnLabel: `factorial(0)`
+      }
+      ctx.emit(baseCaseEvent);
       return 1;
     }
 
     const result = await factorial(n - 1);
     const finalValue = result * n;
 
-    ctx.emit({
+    const returnEvent:ExecutionEvent= {
       id: crypto.randomUUID(),
       type: "return",
       line: 7,
       fn: "factorial",
       fnLabel: `factorial(${n})`,
-      args: [n],
       returnValue: finalValue
-    });
+    }
+
+    ctx.emit(returnEvent);
 
     return finalValue;
   }

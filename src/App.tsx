@@ -1,6 +1,5 @@
 import "./App.css";
 import { useState, useRef } from "react";
-import { EditorView } from "@codemirror/view";
 
 import Editor from "./components/Editor/Editor";
 import Card from "./components/Card/Card";
@@ -10,46 +9,50 @@ import TimeLine from "./components/TimeLine/TimeLine"
 import { factorialAlgorithm } from "./algorithms/recursion/factorial";
 import { ExecutionEngine } from "./engine/ExecutionEngine";
 
+import { Snapshot } from "./engine/types";
+
 export default function App() {
-  const [items, setItems] = useState([]);
-  const [snapShot, setSnapshot] = useState();
-  const editorViewRef = useRef(null);
+  const [items, setItems] = useState<Snapshot[]>();
+  const [snapShot, setSnapshot] = useState<Snapshot>();
+  const editorViewRef  = useRef<HTMLDivElement | null>(null);
   
   const executionEngine = new ExecutionEngine();
+   
   const executeFunction = async () => {
-    setItems([]);
-    
     const input = 3;
     const snapshots = await executionEngine.execute(factorialAlgorithm, input);
+
     setItems(snapshots);
     setSnapshot(snapshots[0]);
   };
 
   const nextSnapshot = () => {
-    const newSnapshotIndex = snapShot.seq + 1;
+    updateSnapshot(snapShot.seq + 1);
+  }
+
+  const prevSnapshot = () => {
+    updateSnapshot(snapShot.seq - 1);
+  }
+
+  const updateSnapshot = (newSnapshotIndex )=> {
     const newSnapshot = items[newSnapshotIndex];
     setSnapshot(newSnapshot);
+    highlightCurrentLine(newSnapshot.line);
+  }
 
-    const line = editorViewRef.current.state.doc.line(newSnapshot.line);
+  const highlightCurrentLine = (snapShotLine: number) => {
+    const line = editorViewRef.current.state.doc.line(snapShotLine);
     editorViewRef.current.dispatch({
       selection: {
         anchor: line.from
       },
       scrollIntoView: true
     });
+
   }
 
-  const prevSnapshot = () => setSnapshot(currentStep -1);
-
-
-  const itemsToRender = items.length > 0 ? items.slice(0, snapShot.seq + 1) : [];
-  if(snapShot != null)
-  {
-
-    console.log("newS ", snapShot.seq);
-  }
-  const nextButtonDisabled = snapShot == null || snapShot.seq >= items.length -1
-    console.log("disables ", nextButtonDisabled);
+  const nextButtonDisabled = snapShot == null || snapShot.seq >= items.length -1;
+  const prevButtonDisabled = snapShot == null || snapShot.seq == 0;
 
   return (
     <div className="min-h-screen min-w-full p-4 flex justify-center items-center bg-gray-200">
@@ -66,8 +69,9 @@ export default function App() {
 
 
 <button
+  disabled={prevButtonDisabled}
   onClick={prevSnapshot}
-  className="h-10 w-10 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center text-white"
+  className="h-10 w-10 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center text-white enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
 >
 
 
@@ -83,7 +87,7 @@ export default function App() {
 
 <button
   onClick={executeFunction}
-  className="h-10 w-10 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center text-white"
+  className="h-10 w-10 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center text-white enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
 >
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -108,7 +112,7 @@ export default function App() {
 <button
   disabled={nextButtonDisabled}
   onClick={nextSnapshot}
-  className="h-10 w-10 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center text-white"
+  className="h-10 w-10 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center text-white enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
 >
 
 
@@ -125,7 +129,7 @@ export default function App() {
       <div className="md:basis-1/3 flex flex-col gap-4">
         <div className="title">Call Stack</div>
         <Stack
-          items={itemsToRender.reverse()}
+          snapshot={snapShot}
           stackHeight={500}
           gap={10}
           renderCardItem={(item) => <Card item={item} />}
