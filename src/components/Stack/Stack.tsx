@@ -5,7 +5,7 @@ import "./Stack.css";
 import { Snapshot, Frame } from "../../engine/types";
 
 interface StackProps {
-  snapshot: Snapshot,
+  snapshot: Snapshot | null,
   renderCardItem: any,
   stackHeight: number,
   gap: number

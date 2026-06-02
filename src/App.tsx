@@ -2,22 +2,23 @@ import "./App.css";
 import { useState, useRef } from "react";
 
 import Editor from "./components/Editor/Editor";
-import Card from "./components/Card/Card";
-import Stack from "./components/Stack/Stack";
+import Card from "./components/Card/Card"; 
+import Stack from "./components/Stack/Stack"; 
 import TimeLine from "./components/TimeLine/TimeLine"
 
 import { ExecutionEngine } from "./engine/ExecutionEngine";
 
-import { Snapshot, AlgorithmDefinition, algorithms} from "./engine/types";
+import { Snapshot, AlgorithmDefinition, algorithms, Frame} from "./engine/types";
+import { EditorView } from "@uiw/react-codemirror";
 
 const algorithmDictionary = Object.fromEntries(
   algorithms.map(alg => [alg.id, alg])
 ) as Record<string, AlgorithmDefinition>;
 
 export default function App() {
-  const [items, setItems] = useState<Snapshot[]>();
-  const [snapShot, setSnapshot] = useState<Snapshot>();
-  const editorViewRef  = useRef<HTMLDivElement | null>(null);
+  const [items, setItems] = useState<Snapshot[]>([]);
+  const [snapShot, setSnapshot] = useState<Snapshot | null>(null);
+  const editorViewRef  = useRef<EditorView| null>(null);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState('');
   
   const executionEngine = new ExecutionEngine();
@@ -33,20 +34,25 @@ export default function App() {
   };
 
   const nextSnapshot = () => {
+    if(!snapShot) return;
     updateSnapshot(snapShot.seq + 1);
   }
 
   const prevSnapshot = () => {
+    if(!snapShot) return;
     updateSnapshot(snapShot.seq - 1);
   }
 
-  const updateSnapshot = (newSnapshotIndex )=> {
+  const updateSnapshot = (newSnapshotIndex : number)=> {
+    if(!items) return;
     const newSnapshot = items[newSnapshotIndex];
     setSnapshot(newSnapshot);
     highlightCurrentLine(newSnapshot.line);
   }
 
   const highlightCurrentLine = (snapShotLine: number) => {
+    if(!editorViewRef || !editorViewRef.current) return;
+
     const line = editorViewRef.current.state.doc.line(snapShotLine);
     editorViewRef.current.dispatch({
       selection: {
@@ -57,11 +63,11 @@ export default function App() {
 
   }
 
-  const nextButtonDisabled = snapShot == null || snapShot.seq >= items.length -1;
+  const nextButtonDisabled = snapShot == null || snapShot.seq >= items!.length -1;
   const prevButtonDisabled = snapShot == null || snapShot.seq == 0;
   const executeButtonDiabled = algorithm == null;
 
-  const changeAlgorithm = (selectedAlgorithm) => {
+  const changeAlgorithm = (selectedAlgorithm: string) => {
     if(selectedAlgorithm !== '')
     {
       setSelectedAlgorithm(selectedAlgorithm);
@@ -92,7 +98,7 @@ export default function App() {
       <Editor editorViewRef={editorViewRef} code={algorithm?.code}/>
     
         <div className="grid grid-flow-col grid-rows-2 gap-2">
-          <TimeLine snapshots={items} snapShot={snapShot} className="col-span-3"/>
+          <TimeLine snapshots={items} className="col-span-3"/>
 
           <div className="flex items-center justify-center col-span-1">
 
@@ -162,7 +168,7 @@ export default function App() {
           snapshot={snapShot}
           stackHeight={500}
           gap={10}
-          renderCardItem={(item) => <Card item={item} />}
+          renderCardItem={(item: Frame) => <Card item={item} />}
         />
       </div>
     </div>
