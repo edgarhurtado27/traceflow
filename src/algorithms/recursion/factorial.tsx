@@ -1,4 +1,4 @@
-import { ExecutionContext, ExecutionEvent } from "../../engine/types";
+import { AlgorithmDefinition, ExecutionContext, ExecutionEvent } from "../../engine/types";
 
 const code = `/**
  * Calculates factorial recursively.
@@ -59,7 +59,7 @@ async function execute(ctx: ExecutionContext, input: number) {
   return factorial(input);
 }
 
-export const factorialAlgorithm = {
+export const factorialAlgorithm: AlgorithmDefinition = {
   id: "factorial",
   title: "Factorial",
   category: "recursion",

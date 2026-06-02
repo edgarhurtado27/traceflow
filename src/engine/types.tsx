@@ -1,3 +1,5 @@
+import { factorialAlgorithm } from "../algorithms/recursion/factorial";
+
 // Eventos emitidos por los algoritmos
 export type ExecutionEvent = {
   id: string;
@@ -39,6 +41,10 @@ export type AlgorithmDefinition = {
 
   execute: (
     ctx: ExecutionContext,
-    input: unknown
+    input: number 
   ) => Promise<unknown>;
 };
+
+export const algorithms: AlgorithmDefinition[] = [
+  factorialAlgorithm,
+];

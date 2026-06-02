@@ -2,10 +2,7 @@ import { ExecutionEvent, Frame, Snapshot, AlgorithmDefinition, ExecutionContext 
 
 export class ExecutionEngine {
 
-  // private events: ExecutionEvent[] = [];
-
   private stack: Frame[] = [];
-
   private snapshots: Snapshot[] = [];
 
   async execute(
@@ -33,11 +30,6 @@ export class ExecutionEngine {
     switch(type)
     {
       case "call":
-        
-        // for(let i = 0; i < this.stack.length; i++)
-        // {
-        //   stackCopy[i].status = "pending";
-        // }
         this.markEventesWaiting(stackCopy);
 
         this.stack.push(frame);
@@ -52,10 +44,6 @@ export class ExecutionEngine {
         this.snapshots.push(snapshotC);
         break;
       case "return":
-        // for(let i = 0; i < this.stack.length; i++)
-        // {
-        //   stackCopy[i].status = "pending";
-        // }
         this.markEventesWaiting(stackCopy);
         this.stack.pop()
 

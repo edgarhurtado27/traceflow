@@ -6,21 +6,27 @@ import Card from "./components/Card/Card";
 import Stack from "./components/Stack/Stack";
 import TimeLine from "./components/TimeLine/TimeLine"
 
-import { factorialAlgorithm } from "./algorithms/recursion/factorial";
 import { ExecutionEngine } from "./engine/ExecutionEngine";
 
-import { Snapshot } from "./engine/types";
+import { Snapshot, AlgorithmDefinition, algorithms} from "./engine/types";
+
+const algorithmDictionary = Object.fromEntries(
+  algorithms.map(alg => [alg.id, alg])
+) as Record<string, AlgorithmDefinition>;
 
 export default function App() {
   const [items, setItems] = useState<Snapshot[]>();
   const [snapShot, setSnapshot] = useState<Snapshot>();
   const editorViewRef  = useRef<HTMLDivElement | null>(null);
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState('');
   
   const executionEngine = new ExecutionEngine();
+
+  const algorithm: AlgorithmDefinition = algorithmDictionary[selectedAlgorithm];
    
   const executeFunction = async () => {
     const input = 3;
-    const snapshots = await executionEngine.execute(factorialAlgorithm, input);
+    const snapshots = await executionEngine.execute(algorithm, input);
 
     setItems(snapshots);
     setSnapshot(snapshots[0]);
@@ -53,14 +59,37 @@ export default function App() {
 
   const nextButtonDisabled = snapShot == null || snapShot.seq >= items.length -1;
   const prevButtonDisabled = snapShot == null || snapShot.seq == 0;
+  const executeButtonDiabled = algorithm == null;
+
+  const changeAlgorithm = (selectedAlgorithm) => {
+    if(selectedAlgorithm !== '')
+    {
+      setSelectedAlgorithm(selectedAlgorithm);
+    }
+  }
 
   return (
     <div className="min-h-screen min-w-full p-4 flex justify-center items-center bg-gray-200">
     <div className="flex flex-col md:flex-row w-full max-w-7xl gap-4">
       <div className="md:basis-2/3 flex flex-col gap-4">
-      <div className="title">Choose algorithm</div>
 
-      <Editor editorViewRef={editorViewRef} code={factorialAlgorithm.code}/>
+      <div className="flex flex-row gap-4">
+
+        <select className="title" value={selectedAlgorithm} onChange={(e) => changeAlgorithm(e.target.value)}>
+          <option value="">Choose an algorithm</option>
+          {Object.entries(algorithmDictionary).map(([key, algorithm]) => (
+    <option
+      key={key}
+      value={key}
+    >
+      {algorithm.title}
+    </option>
+  ))}
+        </select>
+      </div>
+      
+
+      <Editor editorViewRef={editorViewRef} code={algorithm?.code}/>
     
         <div className="grid grid-flow-col grid-rows-2 gap-2">
           <TimeLine snapshots={items} snapShot={snapShot} className="col-span-3"/>
@@ -86,6 +115,7 @@ export default function App() {
           <div className="flex items-center justify-center col-span-1">
 
 <button
+  disabled={executeButtonDiabled}
   onClick={executeFunction}
   className="h-10 w-10 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center text-white enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
 >
