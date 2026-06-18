@@ -70,6 +70,7 @@ export const factorialAlgorithm: AlgorithmDefinition = {
   title: "Factorial",
   category: "recursion",
   visualizer: "recursion",
+  editorAlgorithmName: "factorial.js",
   code,
   execute,
 };

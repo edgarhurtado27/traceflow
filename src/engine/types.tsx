@@ -39,6 +39,7 @@ export type AlgorithmDefinition = {
   category: string;
   visualizer: string;
   code: string;
+  editorAlgorithmName: string;
 
   execute: (
     ctx: ExecutionContext,

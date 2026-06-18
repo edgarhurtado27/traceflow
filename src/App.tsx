@@ -90,9 +90,9 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen min-w-full p-4 flex justify-center items-center bg-gray-200 font-sans">
+    <div className="min-h-screen min-w-full p-4 flex justify-center items-center bg-gray-200 font-sans flex flex-col gap-5">
       <div className="flex flex-col md:flex-row w-full max-w-7xl gap-4">
-        <div className="md:basis-2/3 flex flex-col gap-4">
+        <div className="md:basis-1/2 flex flex-col gap-4">
           <Listbox value={selectedAlgorithm} onChange={changeAlgorithm}>
             <div className="relative">
               <Listbox.Button
@@ -170,45 +170,13 @@ export default function App() {
               </Listbox.Options>
             </div>
           </Listbox>
-          <Editor editorViewRef={editorViewRef} code={algorithm?.code} />
-
-          <div className="grid grid-flow-col grid-rows-2 gap-2">
-            <TimeLine
-              snapshots={items}
-              indexCurrentSnapshot={snapShot?.seq}
-              className="col-span-3"
-            />
-
-            <div className="flex items-center justify-center col-span-1">
-              <button
-                disabled={prevButtonDisabled}
-                onClick={prevSnapshot}
-                className="h-10 w-10 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center text-white enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <StepBack />
-              </button>
-            </div>
-            <div className="flex items-center justify-center col-span-1">
-              <button
-                disabled={executeButtonDiabled}
-                onClick={executeFunction}
-                className="h-10 w-10 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center text-white enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <Play />
-              </button>
-            </div>
-            <div className="flex items-center justify-center col-span-1">
-              <button
-                disabled={nextButtonDisabled}
-                onClick={nextSnapshot}
-                className="h-10 w-10 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center text-white enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <StepForward />
-              </button>
-            </div>
-          </div>
+          <Editor
+            editorViewRef={editorViewRef}
+            code={algorithm?.code}
+            fileName={algorithm?.editorAlgorithmName}
+          />
         </div>
-        <div className="md:basis-1/3 flex flex-col gap-4">
+        <div className="md:basis-1/2 flex flex-col gap-4">
           <div className="flex items-center gap-2 h-14">
             <Layers />
             <h2 className="text-lg">Call Stack</h2>
@@ -220,7 +188,48 @@ export default function App() {
             renderCardItem={(item: Frame) => <Card item={item} />}
           />
         </div>
+
       </div>
+
+
+        <div className="grid grid-flow-col grid-rows-2 gap-2 w-full max-w-7xl">
+          <TimeLine
+            snapshots={items}
+            indexCurrentSnapshot={snapShot?.seq}
+            className="col-span-3"
+          />
+
+          <div className="flex items-center justify-center col-span-1">
+            <button
+              disabled={prevButtonDisabled}
+              onClick={prevSnapshot}
+              className="h-10 w-10 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center text-white enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <StepBack />
+            </button>
+          </div>
+          <div className="flex items-center justify-center col-span-1">
+            <button
+              disabled={executeButtonDiabled}
+              onClick={executeFunction}
+              className="h-10 w-10 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center text-white enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Play />
+            </button>
+          </div>
+          <div className="flex items-center justify-center col-span-1">
+            <button
+              disabled={nextButtonDisabled}
+              onClick={nextSnapshot}
+              className="h-10 w-10 bg-blue-500 hover:bg-blue-700 rounded-full flex items-center justify-center text-white enabled:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <StepForward />
+            </button>
+          </div>
+
+      </div>
+
+
     </div>
   );
 }

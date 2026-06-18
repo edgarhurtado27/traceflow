@@ -46,7 +46,7 @@ export default function Stack({
   }, [items, cardHeight, gap]);
 
   return (
-    <div className="stack border-1 border-slate-300 rounded-lg bg-white">
+    <div className="flex-1 relative border-1 border-slate-300 rounded-lg bg-white"> {/*flex-1 need to grow up automatically the stack*/}
       {items.map((item, index) => (
         <div
           key={index}
