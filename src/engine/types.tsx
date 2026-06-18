@@ -8,6 +8,7 @@ export type ExecutionEvent = {
   fn: string;
   fnLabel: string;
   returnValue?: number;
+  argument?: number;
 };
 
 // Frame que vive dentro del call stack

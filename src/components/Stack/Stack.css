@@ -2,10 +2,8 @@
   position: relative;
   height: 500px;
 
-  border: 1px solid rgb(118, 118, 118);
   padding: 10px;
   box-sizing: border-box;
-  background-color: #202020;
 
   overflow: hidden;
   /*margin-left: auto; Para que el stack quede pegado a la derecha*/

@@ -37,11 +37,6 @@ textarea {
   gap: 12px;
 }
 
-.title{
-  color: #999;
-  font-size: 20px;
-}
-
 .executed-line {
   background: rgba(0, 255, 0, 0.08);
 }

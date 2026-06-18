@@ -1,4 +1,8 @@
-import { AlgorithmDefinition, ExecutionContext, ExecutionEvent } from "../../engine/types";
+import {
+  AlgorithmDefinition,
+  ExecutionContext,
+  ExecutionEvent,
+} from "../../engine/types";
 
 const code = `/**
  * Calculates factorial recursively.
@@ -10,31 +14,32 @@ const factorial = (n) => {
 }
 `;
 
-
 async function execute(ctx: ExecutionContext, input: number) {
-
   /*
    * Function definition, it will emit the events for further proccess
    * */
   async function factorial(n: number): Promise<number> {
+    const label = n > 0 ? `${n} * factorial(${n - 1})` : 'factorial(0)';
 
-    const callEvent:ExecutionEvent = {
+    const callEvent: ExecutionEvent = {
       id: crypto.randomUUID(),
       type: "call",
       line: 4,
       fn: "factorial",
-      fnLabel: `factorial(${n})`
-    }
+      fnLabel: label,
+      argument: n,
+    };
     ctx.emit(callEvent);
 
-    if(n === 0) {
-      const baseCaseEvent:ExecutionEvent = {
+    if (n === 0) {
+      const baseCaseEvent: ExecutionEvent = {
         id: crypto.randomUUID(),
         type: "base_case",
         line: 5,
         fn: "factorial",
-        fnLabel: `factorial(0)`
-      }
+        fnLabel: `factorial(0)`,
+        argument: 0,
+      };
       ctx.emit(baseCaseEvent);
       return 1;
     }
@@ -42,14 +47,15 @@ async function execute(ctx: ExecutionContext, input: number) {
     const result = await factorial(n - 1);
     const finalValue = result * n;
 
-    const returnEvent:ExecutionEvent= {
+    const returnEvent: ExecutionEvent = {
       id: crypto.randomUUID(),
       type: "return",
       line: 7,
       fn: "factorial",
       fnLabel: `factorial(${n})`,
-      returnValue: finalValue
-    }
+      returnValue: finalValue,
+      argument: n,
+    };
 
     ctx.emit(returnEvent);
 
@@ -65,5 +71,5 @@ export const factorialAlgorithm: AlgorithmDefinition = {
   category: "recursion",
   visualizer: "recursion",
   code,
-  execute
-}
+  execute,
+};

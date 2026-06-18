@@ -22,6 +22,7 @@ export default function Editor({editorViewRef, code}: EditorProps) {
   return (
         <CodeMirror
           height="500px"
+          className='border-1 border-slate-300 rounded-lg bg-white'
           editable={false}
           extensions={[javascript({ jsx: true }), executionTheme]}
           value={code}
