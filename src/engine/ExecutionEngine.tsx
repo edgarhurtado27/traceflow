@@ -24,12 +24,12 @@ export class ExecutionEngine {
   }
 
   emit(event: ExecutionEvent): void {
-    const { id, fn, fnLabel, type, line, returnValue } = event;
+    const { id, fn, type, line, returnValue, details } = event;
 
     const frame: Frame = {
       id,
       fn,
-      fnLabel,
+      details,
       status: "active",
     };
 

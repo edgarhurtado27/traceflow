@@ -19,14 +19,15 @@ async function execute(ctx: ExecutionContext, input: number) {
    * Function definition, it will emit the events for further proccess
    * */
   async function factorial(n: number): Promise<number> {
-    const label = n > 0 ? `${n} * factorial(${n - 1})` : 'factorial(0)';
+    const label = n > 0 ? `factorial(${n})` : 'factorial(0)';
+    const details = n > 0 ? `${n} * factorial(${n - 1})` : 'factorial(0)';
 
     const callEvent: ExecutionEvent = {
       id: crypto.randomUUID(),
       type: "call",
       line: 4,
-      fn: "factorial",
-      fnLabel: label,
+      fn: label,
+      details: details,
       argument: n,
     };
     ctx.emit(callEvent);
@@ -37,7 +38,8 @@ async function execute(ctx: ExecutionContext, input: number) {
         type: "base_case",
         line: 5,
         fn: "factorial",
-        fnLabel: `factorial(0)`,
+        details: `factorial(0)`,
+        returnValue: 1,
         argument: 0,
       };
       ctx.emit(baseCaseEvent);
@@ -52,7 +54,7 @@ async function execute(ctx: ExecutionContext, input: number) {
       type: "return",
       line: 7,
       fn: "factorial",
-      fnLabel: `factorial(${n})`,
+      details: `factorial(${n})`,
       returnValue: finalValue,
       argument: n,
     };

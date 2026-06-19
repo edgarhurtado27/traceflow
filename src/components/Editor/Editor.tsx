@@ -20,7 +20,7 @@ const executionTheme = EditorView.theme({
 export default function Editor({ editorViewRef, code, fileName }: EditorProps) {
   return (
     <div className="flex flex-col">
-      <div className="border-1 border-b-0 h-12 border-slate-300  bg-white rounded-lg rounded-b-none  flex gap-2 px-4 flex-row items-center">
+      <div className="border-1 border-b-0 h-12 border-slate-300  bg-white rounded-t-lg  flex gap-2 px-4 flex-row items-center">
         {fileName && (
           <>
             <svg viewBox="0 0 128 128" className="size-5">
@@ -39,7 +39,7 @@ export default function Editor({ editorViewRef, code, fileName }: EditorProps) {
       </div>
       <CodeMirror
         height="500px"
-        className="border-1 border-slate-300 bg-white"
+        className="border-1 border-slate-300 bg-white rounded-b-lg"
         editable={false}
         extensions={[javascript({ jsx: true }), executionTheme]}
         value={code}

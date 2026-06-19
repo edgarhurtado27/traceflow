@@ -94,15 +94,13 @@ export default function App() {
       <div className="flex flex-col md:flex-row w-full max-w-7xl gap-4">
         <div className="md:basis-1/2 flex flex-col gap-4">
           <Listbox value={selectedAlgorithm} onChange={changeAlgorithm}>
-            <div className="relative">
+            <div className="flex relative items-center h-14">
               <Listbox.Button
                 className="
-              h-14
               w-full
+              h-full
     max-w-1/2
     rounded-xl
-    border
-    border-slate-300
     bg-white
     px-4
             "

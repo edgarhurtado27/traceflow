@@ -1,31 +1,38 @@
 .card {
   height: 100%;
-  border-radius: 20px;
-  color: white;
   display: flex;
-  justify-content: center;
-  flex-direction: column;
   padding: 0px 10px;
-  background-color: #2B2D31;
 }
 
 .active-bg {
-  /* background: #5E81AC; */
-  border-left: 5px solid #5E81AC;
+  border-left: 7px solid #2b7fff;
 }
 
 .returned-bg {
-  /* background: #A3BE8C; */
-  border-left: 5px solid #A3BE8C;
+  border-left: 7px solid #9D62DE;
 }
-
+ 
 .waiting-bg{
-  /* background: #4C566A; */
-  border-left: 5px solid #4C566A;
+  border-left: 7px solid #F6BA2A;
 }
 
 .bc-bg {
-  /* background: #A3BE8C; */
-  border-left: 5px solid #A3BE8C;
+  border-left: 7px solid #44B25D;
+}
+
+.active-tc {
+  color: #2b7fff;
+}
+
+.bc-tc {
+  color: #44B25D;
+}
+
+.returned-tc {
+  color: #9D62DE;
+}
+
+.waiting-tc {
+  color: #F6BA2A;
 }
 

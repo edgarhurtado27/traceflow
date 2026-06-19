@@ -6,7 +6,7 @@ export type ExecutionEvent = {
   type: "call" | "return" | "base_case";
   line: number;
   fn: string;
-  fnLabel: string;
+  details: string;
   returnValue?: number;
   argument?: number;
 };
@@ -15,8 +15,8 @@ export type ExecutionEvent = {
 export type Frame = {
   id: string;
   fn: string;
-  fnLabel: string;
   status: "active" | "returned" | "base_case" | "waiting";
+  details: string;
   returnValue?: number;
 };
 
